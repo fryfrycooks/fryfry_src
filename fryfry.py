@@ -207,7 +207,7 @@ def buildToolsTable(data):
 		if r['Item'] != None:
 			s += r['Item']
 		if r['Prep'] != None:
-			if len(s) > 0:
+			if len(r['Prep']) > 0:
 				s += ', '
 			s += r['Prep']
 
