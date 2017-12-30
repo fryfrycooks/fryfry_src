@@ -114,7 +114,9 @@ def buildMiseTable(data):
 	# the left side should be >= the right side
 	mc = df['Type'].value_counts()
 	mc.sort_values(ascending=False)
+
 	for i, r in mc.iteritems():
+
 		if left_len == right_len or left_len < right_len:
 			left_idxs.append(i)
 			left_len += r + 1
@@ -129,7 +131,7 @@ def buildMiseTable(data):
 	#of rows to format
 	df.Type = df.Type.astype("category")
 	df.Type.cat.set_categories(left_idxs + right_idxs, inplace=True)
-	df.sort_values(['Type'])
+	df.sort_values(['Type'], inplace=True)
 
 	last_left_type = ''
 	last_right_type = ''
@@ -151,13 +153,24 @@ def buildMiseTable(data):
 
 			right_elements.append(r)
 
+	
+
+	len_le = len(left_elements)
+	len_re = len(right_elements)
+
 	elements = []
-	for i in range(len(left_elements)):
-		if i >= len(right_elements):
+
+
+	for i in range(len_le):
+		if i >= len_re:
 			re = {'Type':'#CELLEMPTY'}
 		else:
 			re = right_elements[i]
 		elements.append((left_elements[i], re))
+
+	if len_le < len_re:
+		for i in range(len_le, len_re):
+			elements.append(({'Type':'#CELLEMPTY'}, right_elements[i]))
 
 
 	#now we can build the table
